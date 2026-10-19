@@ -35,8 +35,7 @@ public class App {
 
         
         // Implementation of the main server loop
-        new Server(port).start();
+        new Server(port, max_threads).start();
 
-        ServerSocket serverSocket;
     }
 }

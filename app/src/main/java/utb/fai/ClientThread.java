@@ -34,16 +34,16 @@ public class ClientThread extends Thread implements Runnable{
             String line;
             while((line = in.readLine()) != null){
                 System.out.println("Zprava od klienta: " + line);
-                out.println("Server: "+ line);
+                out.println(line);
             }
         } catch (IOException e){
             System.err.println("Doslo k chybe v komunikaci s klientem "+ e.getMessage());
         } finally{
-            this.activeSocket.remove(this.socket);
+            activeSocket.remove(socket);
             try {
-                this.socket.close();
-            } catch (IOException er) {
-                er.printStackTrace();
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             System.out.println("Klient (" + this.socket.getInetAddress() + ") se odpojil od serveru.");
         }

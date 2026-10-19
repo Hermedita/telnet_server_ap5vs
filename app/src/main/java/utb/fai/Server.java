@@ -69,7 +69,7 @@ public class Server {
             e.printStackTrace();
         }
 
-        for (Socket socket : activeSocket){
+        for (Socket socket : activeSockets){
             try{
                 socket.close();
             } catch (IOException ignored){}

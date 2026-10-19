@@ -37,7 +37,7 @@ public class ClientThread extends Thread implements Runnable{
                 out.println("Server: "+ line);
             }
         } catch (IOException e){
-            System.e.println("Doslo k chybe v komunikaci s klientem "+ e.getMessage());
+            System.err.println("Doslo k chybe v komunikaci s klientem "+ e.getMessage());
         } finally{
             this.activeSocket.remove(this.socket);
             try {

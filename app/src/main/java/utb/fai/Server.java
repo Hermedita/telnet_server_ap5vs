@@ -33,16 +33,6 @@ public class Server {
             while(!this.executorService.isShutdown()){
                 Socket clientSocket = serverSocket.accept();
 
-                if (activeSockets.size() >= max_threads) {
-                    System.out.println("Server neprijima dalsi klienty.");
-                    try {
-                        clientSocket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    continue;
-                }
-
                 this.activeSockets.add(clientSocket);
                 System.out.println("Pripojil se novy klinet: " + clientSocket.getInetAddress());
 
@@ -75,7 +65,7 @@ public class Server {
             } catch (IOException ignored){}
         }
 
-        this.executorService.shutdown();
+        this.executorService.shutdownNow();
 
         try{
             if(!this.executorService.awaitTermination(30,TimeUnit.SECONDS)){

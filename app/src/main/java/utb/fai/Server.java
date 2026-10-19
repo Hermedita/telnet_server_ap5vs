@@ -8,12 +8,12 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class Server {
     private final int port;
     private final ExecutorService executorService;
+    private final int max_threads;
     private final Set<Socket> activeSockets = ConcurrentHashMap.newKeySet();
     private volatile ServerSocket serverSocket;
 
@@ -47,14 +47,14 @@ public class Server {
                 System.out.println("Pripojil se novy klinet: " + clientSocket.getInetAddress());
 
                 this.executorService.execute(new ClientThread(clientSocket, this.activeSockets));
+            }
 
-            } catch (IOException e) {
-
-                if (this.serverSocket == null || this.serverSocket.isClosed()) {
-                    System.out.println("Server uspesne ukoncen");
-                } else {
-                    System.err.println("Chyba na serveru " + e.getMessage());
-                }
+        } catch (IOException e) {
+            if (this.serverSocket == null || this.serverSocket.isClosed()) {
+                System.out.println("Server uspesne ukoncen");
+            } else {
+                System.err.println("Chyba na serveru " + e.getMessage());
+            }
         } finally {
             this.close();
         }
@@ -79,10 +79,10 @@ public class Server {
 
         try{
             if(!this.executorService.awaitTermination(30,TimeUnit.SECONDS)){
-                this.executorService.shutdown();
+                this.executorService.shutdownNow();
             }
         } catch (InterruptedException e) {
-            this.executorService.shutdown();
+            this.executorService.shutdownNow();
             Thread.currentThread().interrupt();
         }
     }
